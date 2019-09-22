@@ -1,6 +1,6 @@
 Flask
 mebots
-gunicorn>=19.9.0
+gunicorn
 pillow
 matplotlib
 sympy
