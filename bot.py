@@ -36,7 +36,6 @@ def upload_image(data) -> str:
     return r.json()["payload"]["url"]
 
 
-
 # Webhook receipt and response
 @app.route("/", methods=["POST"])
 def receive():
@@ -67,11 +66,14 @@ def ingest(message):
         resolution = 400
         backcolor = "White"
         forecolor = "Black"
-        dvi = r"-T %s -D %d -bg %s -fg %s -O %s" % (
-                        imagesize, resolution, backcolor, forecolor, offset)
+        dvi = r"-T %s -D %d -bg %s -fg %s -O %s" % (imagesize,
+                                                    resolution,
+                                                    backcolor,
+                                                    forecolor,
+                                                    offset)
         dvioptions = dvi.split()
-        sympy.preview(message["text"], output="png", viewer="BytesIO", outputbuffer=img, euler=False,
-                      dvioptions=dvioptions)
+        sympy.preview(message["text"], output="png", viewer="BytesIO",
+                      outputbuffer=img, euler=False, dvioptions=dvioptions)
         url = upload_image(img.getvalue())
         response = ("", url)
     return response
