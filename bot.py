@@ -88,3 +88,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.command:
         print(ingest({"sender_type": "user", "text": args.command}))
+
+print("Launched!")
