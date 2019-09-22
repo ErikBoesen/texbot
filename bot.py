@@ -62,7 +62,7 @@ def ingest(message):
     response = None
     if message["sender_type"] == "user" and (message["text"].startswith(PREFIX) and message["text"].endswith(SUFFIX)):
         img = BytesIO()
-        sympy.preview(message["text"], viewer='BytesIO', outputbuffer=img, euler=False)
+        sympy.preview(message["text"], output="png", viewer="BytesIO", outputbuffer=img, euler=False)
         url = upload_image(img.getvalue())
         response = url
     return response
