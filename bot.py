@@ -64,20 +64,24 @@ def ingest(message):
         img = BytesIO()
         sympy.preview(message["text"], output="png", viewer="BytesIO", outputbuffer=img, euler=False)
         url = upload_image(img.getvalue())
-        response = url
+        response = ("", url)
     return response
 
 
-def send(message, group_id):
+def send(message: tuple, group_id):
     """
     Reply in chat.
-    :param message: text of message to send. May be a tuple with further data, or a list of messages.
+    :param message: Tuple of message text and picture URL.
     :param group_id: ID of group in which to send message.
     """
+    text, picture_url = message
+    text = text or ""
+    picture_url = picture_url or ""
     data = {
         "bot_id": bot.instance(group_id).id,
+        "text": text,
+        "picture_url": picture_url,
     }
-    data["text"] = message
     response = requests.post("https://api.groupme.com/v3/bots/post", data=data)
 
 
