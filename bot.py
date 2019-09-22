@@ -2,10 +2,10 @@
 from flask import Flask, request
 
 # Drawing
-import matplotlib.pyplot as plt
 import sympy
 
 # Other
+import argparse
 import mebots
 from threading import Thread
 import requests
@@ -14,14 +14,14 @@ from io import BytesIO
 
 
 app = Flask(__name__)
-bot = mebots.Bot("texbot", os.environ["BOT_TOKEN"])
+bot = mebots.Bot("texbot", os.environ.get("BOT_TOKEN"))
 
 PREFIX = "$$"
 SUFFIX = "$$"
 
 
 # Image processing
-def upload_image(self, data) -> str:
+def upload_image(data) -> str:
     """
     Send image to GroupMe Image API.
 
@@ -87,4 +87,4 @@ if __name__ == "__main__":
     parser.add_argument("command", nargs="?")
     args = parser.parse_args()
     if args.command:
-        print(ingest({"text": args.command}))
+        print(ingest({"sender_type": "user", "text": args.command}))
