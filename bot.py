@@ -84,14 +84,16 @@ def send(message: tuple, group_id):
     :param group_id: ID of group in which to send message.
     """
     text, picture_url = message
-    text = text or ""
-    picture_url = picture_url or ""
-    data = {
-        "bot_id": bot.instance(group_id).id,
-        "text": text,
-        "picture_url": picture_url,
-    }
-    response = requests.post("https://api.groupme.com/v3/bots/post", data=data)
+    # Prevent us from trying to send nothing
+    if text or picture_url:
+        text = text or ""
+        picture_url = picture_url or ""
+        data = {
+            "bot_id": bot.instance(group_id).id,
+            "text": text,
+            "picture_url": picture_url,
+        }
+        response = requests.post("https://api.groupme.com/v3/bots/post", data=data)
 
 
 # Local testing
