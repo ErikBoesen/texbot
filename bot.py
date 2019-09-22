@@ -65,7 +65,7 @@ def ingest(message):
         imagesize = "bbox"
         offset = "0.3cm,0.3cm"
         resolution = 400
-        backcolor = "Transparent"
+        backcolor = "White"
         forecolor = "Black"
         dvi = r"-T %s -D %d -bg %s -fg %s -O %s" % (
                         imagesize, resolution, backcolor, forecolor, offset)
