@@ -16,8 +16,8 @@ from io import BytesIO
 app = Flask(__name__)
 bot = mebots.Bot("texbot", os.environ.get("BOT_TOKEN"))
 
-PREFIX = "$$"
-SUFFIX = "$$"
+PREFIX = "$"
+SUFFIX = "$"
 
 
 # Image processing
@@ -59,23 +59,29 @@ def reply(message, group_id):
 
 def ingest(message):
     response = None
-    if message["sender_type"] == "user" and (message["text"].startswith(PREFIX) and message["text"].endswith(SUFFIX)):
-        img = BytesIO()
-        imagesize = "bbox"
-        offset = "0.3cm,0.3cm"
-        resolution = 400
-        backcolor = "White"
-        forecolor = "Black"
-        dvi = r"-T %s -D %d -bg %s -fg %s -O %s" % (imagesize,
-                                                    resolution,
-                                                    backcolor,
-                                                    forecolor,
-                                                    offset)
-        dvioptions = dvi.split()
-        sympy.preview(message["text"], output="png", viewer="BytesIO",
-                      outputbuffer=img, euler=False, dvioptions=dvioptions)
-        url = upload_image(img.getvalue())
-        response = ("", url)
+    text = message["text"].strip()
+    if message["sender_type"] == "user" and text.startswith(PREFIX):
+        if message["text"].endswith(SUFFIX)):
+            img = BytesIO()
+            imagesize = "bbox"
+            offset = "0.3cm,0.3cm"
+            resolution = 400
+            backcolor = "White"
+            forecolor = "Black"
+            dvi = r"-T %s -D %d -bg %s -fg %s -O %s" % (imagesize,
+                                                        resolution,
+                                                        backcolor,
+                                                        forecolor,
+                                                        offset)
+            dvioptions = dvi.split()
+            sympy.preview(text, output="png", viewer="BytesIO",
+                          outputbuffer=img, euler=False, dvioptions=dvioptions)
+            url = upload_image(img.getvalue())
+            response = ("", url)
+        else:
+            command = text.lower().lstrip(PREFIX).split()[0]
+            if command == "info":
+                return ("I'm TeXbot, a helpful tool that you can use to typeset (La)TeX math in GroupMe! I was made by Erik Boesen (erikboesen.com). You can see more information and add me to your own chat at http://mebots.co/bot/texbot", "")
     return response
 
 
