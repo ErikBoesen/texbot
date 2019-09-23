@@ -74,10 +74,13 @@ def ingest(message):
                                                         forecolor,
                                                         offset)
             dvioptions = dvi.split()
-            sympy.preview(text, output="png", viewer="BytesIO",
-                          outputbuffer=img, euler=False, dvioptions=dvioptions)
-            url = upload_image(img.getvalue())
-            response = ("", url)
+            try:
+                sympy.preview(text, output="png", viewer="BytesIO",
+                              outputbuffer=img, euler=False, dvioptions=dvioptions)
+                url = upload_image(img.getvalue())
+                response = ("", url)
+            except:
+                response = ("There was an error typsesetting the equation you specified. Please check your syntax, or report a bug at https://github.com/ErikBoesen/texbot/issues/new!", "")
         else:
             command = text.lower().lstrip(PREFIX).split()[0]
             if command == "info":
