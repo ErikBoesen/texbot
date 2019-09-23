@@ -61,7 +61,7 @@ def ingest(message):
     response = None
     text = message["text"].strip()
     if message["sender_type"] == "user" and text.startswith(PREFIX):
-        if message["text"].endswith(SUFFIX)):
+        if message["text"].endswith(SUFFIX):
             img = BytesIO()
             imagesize = "bbox"
             offset = "0.3cm,0.3cm"
