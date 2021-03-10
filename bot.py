@@ -99,12 +99,12 @@ def send(message: tuple, group_id):
     if text or picture_url:
         text = text or ""
         picture_url = picture_url or ""
-        data = {
+        payload = {
             "bot_id": bot.instance(group_id).id,
             "text": text,
             "picture_url": picture_url,
         }
-        response = requests.post("https://api.groupme.com/v3/bots/post", json=data)
+        response = requests.post("https://api.groupme.com/v3/bots/post", json=payload)
 
 
 # Local testing
