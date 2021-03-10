@@ -104,7 +104,7 @@ def send(message: tuple, group_id):
             "text": text,
             "picture_url": picture_url,
         }
-        response = requests.post("https://api.groupme.com/v3/bots/post", data=data)
+        response = requests.post("https://api.groupme.com/v3/bots/post", json=data)
 
 
 # Local testing
