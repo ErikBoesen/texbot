@@ -79,7 +79,8 @@ def ingest(message):
                               outputbuffer=img, euler=False, dvioptions=dvioptions)
                 url = upload_image(img.getvalue())
                 response = ("", url)
-            except:
+            except Exception as e:
+                print(e)
                 response = ("There was an error typsesetting the equation you specified. Please check your syntax, or report a bug at https://github.com/ErikBoesen/texbot/issues/new!", "")
         else:
             command = text.lower().lstrip(PREFIX).split()[0]
