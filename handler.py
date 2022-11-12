@@ -16,9 +16,7 @@ def receive(event, context):
     """
     # Retrieve data on that single GroupMe message.
     message = json.loads(event["body"])
-    bot_id = message["bot_id"]
-    token = message["token"]
-    reply(message, bot_id, token)
+    reply(message)
 
     response = {
         "statusCode": 200,
@@ -42,10 +40,10 @@ def upload_image(data, token) -> str:
     return r.json()["payload"]["url"]
 
 
-def reply(message, bot_id, token):
+def reply(message):
     response = ingest(message)
     if response:
-        send(response, bot_id)
+        send(response, message["bot_id"])
 
 
 def ingest(message):
@@ -69,7 +67,10 @@ def ingest(message):
             status = int(lines[0])
             if status == 0:
                 url = lines[1].split()[0]
-                return (url, "")
+                requests.get(url, url_stream=True)
+                img = r.raw.read()
+                new_url = upload_image(img, message["token"])
+                return (new_url, "")
             else:
                 return ("\n".join(lines[2:]), "")
         else:
