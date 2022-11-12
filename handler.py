@@ -1,7 +1,10 @@
+import sys
+sys.path.insert(0, 'vendor')
+
 import json
-import requests
 import os
 from io import BytesIO
+import requests
 
 
 PREFIX = "$"
