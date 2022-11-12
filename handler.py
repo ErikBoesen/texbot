@@ -67,7 +67,7 @@ def ingest(message):
             status = int(lines[0])
             if status == 0:
                 url = lines[1].split()[0]
-                requests.get(url, url_stream=True)
+                requests.get(url, stream=True)
                 img = r.raw.read()
                 new_url = upload_image(img, message["token"])
                 return (new_url, "")
