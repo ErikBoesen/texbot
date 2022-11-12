@@ -4,9 +4,6 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.8
-  layers:
-    - rn:aws:lambda:${REGION}:652718333417:layer:perl-5_28-layer:1
-    -
 functions:
   receive:
     handler: handler.receive
