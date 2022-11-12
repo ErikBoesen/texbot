@@ -105,3 +105,6 @@ venv.bak/
 
 # Serverless directory
 .serverless
+
+# Custom
+vendor/
