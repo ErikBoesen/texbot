@@ -55,7 +55,7 @@ def ingest(message):
     if message["sender_type"] == "user" and text.startswith(PREFIX):
         if message["text"].endswith(SUFFIX):
             data = {
-                "formula": message["text"],
+                "formula": message["text"].strip("$"),
                 "fsize": "50px",
                 "fcolor": "000000",
                 "bcolor": "ffffff",
