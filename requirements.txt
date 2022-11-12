@@ -1,6 +1,1 @@
-Flask
-mebots
-gunicorn
-pillow
-matplotlib
-sympy
+requests
