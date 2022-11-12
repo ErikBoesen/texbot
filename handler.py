@@ -51,7 +51,25 @@ def ingest(message):
     text = message["text"].strip()
     if message["sender_type"] == "user" and text.startswith(PREFIX):
         if message["text"].endswith(SUFFIX):
-            pass
+            data = {
+                "formula": message["text"],
+                "fsize": "50px",
+                "fcolor": "000000",
+                "bcolor": "ffffff",
+                "errors": "1",
+                "preamble": "\\usepackage{amsmath}\n\\usepackage{amsfonts}\n\\usepackage{amssymb}",
+            }
+            data_text = "&".join([key + "=" + value for key, value in data.items()])
+
+            response = requests.post("https://quicklatex.com/latex3.f", data=data_text)
+
+            lines = response.text.split("\r\n")
+            status = int(lines[0])
+            if status == 0:
+                url = lines[1].split()[0]
+                return (url, "")
+            else:
+                return ("\n".join(lines[2:]), "")
             """
             try:
                 sympy.preview(text, output="png", viewer="BytesIO",
