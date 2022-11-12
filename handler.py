@@ -23,7 +23,7 @@ def receive(event, context):
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": "ok"
     }
 
 # Image processing
