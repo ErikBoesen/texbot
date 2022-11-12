@@ -1,4 +1,11 @@
 import json
+import requests
+import os
+from io import BytesIO
+
+
+PREFIX = "$"
+SUFFIX = "$"
 
 
 def receive(event, context):
@@ -6,9 +13,10 @@ def receive(event, context):
     Receive callback to URL when message is sent in the group.
     """
     # Retrieve data on that single GroupMe message.
-    message = json.loads(event['body'])
-    bot_id = message['bot_id']
-    reply(message, group_id)
+    message = json.loads(event["body"])
+    bot_id = message["bot_id"]
+    token = message["token"]
+    reply(message, bot_id, token)
 
     response = {
         "statusCode": 200,
@@ -32,14 +40,10 @@ def upload_image(data, token) -> str:
     return r.json()["payload"]["url"]
 
 
-# Webhook receipt and response
-def receive():
-
-
-def reply(message, group_id):
+def reply(message, bot_id, token):
     response = ingest(message)
     if response:
-        send(response, group_id)
+        send(response, bot_id)
 
 
 def ingest(message):
@@ -47,18 +51,8 @@ def ingest(message):
     text = message["text"].strip()
     if message["sender_type"] == "user" and text.startswith(PREFIX):
         if message["text"].endswith(SUFFIX):
-            img = BytesIO()
-            imagesize = "bbox"
-            offset = "0.3cm,0.3cm"
-            resolution = 400
-            backcolor = "White"
-            forecolor = "Black"
-            dvi = r"-T %s -D %d -bg %s -fg %s -O %s" % (imagesize,
-                                                        resolution,
-                                                        backcolor,
-                                                        forecolor,
-                                                        offset)
-            dvioptions = dvi.split()
+            pass
+            """
             try:
                 sympy.preview(text, output="png", viewer="BytesIO",
                               outputbuffer=img, euler=False, dvioptions=dvioptions)
@@ -67,18 +61,19 @@ def ingest(message):
             except Exception as e:
                 print(e)
                 response = ("There was an error typsesetting the equation you specified. Please check your syntax, or report a bug at https://github.com/ErikBoesen/texbot/issues/new!", "")
+            """
         else:
             command = text.lower().lstrip(PREFIX).split()[0]
             if command == "info":
-                return ("I'm TeXbot, a helpful tool that you can use to typeset (La)TeX math in GroupMe! I was made by Erik Boesen (erikboesen.com). You can see more information and add me to your own chat at https://mebots.co/bot/texbot. My source code is at https://github.com/ErikBoesen/texbot.", "")
+                return ("I'm TeXbot, a helpful tool that you can use to typeset (La)TeX math in GroupMe! You can see more information and add me to your own chat at https://mebots.io/bot/texbot. My source code is at https://github.com/ErikBoesen/texbot.", "")
     return response
 
 
-def send(message: tuple, group_id):
+def send(message: tuple, bot_id):
     """
     Reply in chat.
     :param message: Tuple of message text and picture URL.
-    :param group_id: ID of group in which to send message.
+    :param id_id: ID of bot instance to use for sending message.
     """
     text, picture_url = message
     # Prevent us from trying to send nothing
@@ -86,10 +81,8 @@ def send(message: tuple, group_id):
         text = text or ""
         picture_url = picture_url or ""
         payload = {
-            "bot_id": bot.instance(group_id).id,
+            "bot_id": bot_id,
             "text": text,
             "picture_url": picture_url,
         }
         response = requests.post("https://api.groupme.com/v3/bots/post", json=payload)
-
-
