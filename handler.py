@@ -53,7 +53,7 @@ def ingest(message):
         if message["text"].endswith(AFFIX):
             data = {
                 "formula": message["text"].strip(AFFIX),
-                "fsize": "50px",
+                "fsize": "80px",
                 "fcolor": "000000",
                 "bcolor": "ffffff",
                 "errors": "1",
