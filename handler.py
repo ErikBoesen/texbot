@@ -75,8 +75,8 @@ def ingest(message):
                 return ("\n".join(lines[2:]), "")
         else:
             command = text.lower().lstrip(AFFIX).split()[0]
-            if command == "info":
-                return ("I'm TeXbot, a helpful tool that you can use to typeset (La)TeX math in GroupMe! You can see more information and add me to your own chat at https://mebots.io/bot/texbot. My source code is at https://github.com/ErikBoesen/texbot.", "")
+            if command in ("info", "help"):
+                return ("I'm TeXbot, a helpful tool that you can use to typeset (La)TeX math in GroupMe! Simply send LaTeX markup surrounded by $ symbols to render your math of choice. You can see more information and add me to your own chat at https://mebots.io/bot/texbot. My source code is at https://github.com/ErikBoesen/texbot.", "")
     return response
 
 
