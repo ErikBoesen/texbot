@@ -7,8 +7,7 @@ from io import BytesIO
 import requests
 
 
-PREFIX = "$"
-SUFFIX = "$"
+AFFIX = "$"
 
 
 def receive(event, context):
@@ -52,10 +51,10 @@ def reply(message, bot_id, token):
 def ingest(message):
     response = None
     text = message["text"].strip()
-    if message["sender_type"] == "user" and text.startswith(PREFIX):
-        if message["text"].endswith(SUFFIX):
+    if message["sender_type"] == "user" and text.startswith(AFFIX):
+        if message["text"].endswith(AFFIX):
             data = {
-                "formula": message["text"].strip("$"),
+                "formula": message["text"].strip(AFFIX),
                 "fsize": "50px",
                 "fcolor": "000000",
                 "bcolor": "ffffff",
@@ -73,18 +72,8 @@ def ingest(message):
                 return (url, "")
             else:
                 return ("\n".join(lines[2:]), "")
-            """
-            try:
-                sympy.preview(text, output="png", viewer="BytesIO",
-                              outputbuffer=img, euler=False, dvioptions=dvioptions)
-                url = upload_image(img.getvalue())
-                response = ("", url)
-            except Exception as e:
-                print(e)
-                response = ("There was an error typsesetting the equation you specified. Please check your syntax, or report a bug at https://github.com/ErikBoesen/texbot/issues/new!", "")
-            """
         else:
-            command = text.lower().lstrip(PREFIX).split()[0]
+            command = text.lower().lstrip(AFFIX).split()[0]
             if command == "info":
                 return ("I'm TeXbot, a helpful tool that you can use to typeset (La)TeX math in GroupMe! You can see more information and add me to your own chat at https://mebots.io/bot/texbot. My source code is at https://github.com/ErikBoesen/texbot.", "")
     return response
