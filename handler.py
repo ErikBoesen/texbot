@@ -70,7 +70,7 @@ def ingest(message):
                 image_request = requests.get(url, stream=True)
                 img = image_request.raw.read()
                 new_url = upload_image(img, message["token"])
-                return (new_url, "")
+                return ("", new_url)
             else:
                 return ("\n".join(lines[2:]), "")
         else:
