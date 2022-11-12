@@ -36,7 +36,7 @@ def upload_image(data, token) -> str:
         "X-Access-Token": token,
         "Content-Type": "image/jpeg",
     }
-    r = requests.post("https://image.groupme.com/pictures", json=data, headers=headers)
+    r = requests.post("https://image.groupme.com/pictures", data=data, headers=headers)
     return r.json()["payload"]["url"]
 
 
